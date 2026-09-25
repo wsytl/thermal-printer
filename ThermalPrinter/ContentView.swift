@@ -179,10 +179,11 @@ struct ContentView: View {
 
             Divider().frame(height: 16)
 
-            Text("浓度 中（\(PrintSettings.fixedDensity)）")
+            Text("浓度 \(PrintSettings.fixedDensityLabel)")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .help("打印深浅固定为中等（3/5）。如需调节改 PrintSettings.fixedDensity")
+                .help("浓度与走纸速度耦合：浓度越高墨色越深，但图案会被纵向压扁。"
+                      + "故固定为 1；要调需按浓度标定纵向补偿（见 NOTES 第十四节）")
 
             Spacer()
 

@@ -23,6 +23,17 @@ final class PrintSettings: ObservableObject {
     ///    所以固定用 1；若将来要更深的墨色，必须同时按该浓度标定纵向预拉伸。
     static let fixedDensity = 1
 
+    /// 界面显示用（浓度值 → 描述）
+    static var fixedDensityLabel: String {
+        switch fixedDensity {
+        case 1: return "1（最淡·比例准）"
+        case 2: return "2（偏淡）"
+        case 3: return "3（中等·会压扁）"
+        case 4: return "4（偏深·会压扁）"
+        default: return "5（最深·会压扁）"
+        }
+    }
+
     // MARK: - 文本排版
 
     @Published var fontFamily = ""           // "" = 系统默认

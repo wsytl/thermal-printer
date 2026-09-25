@@ -37,13 +37,13 @@ def api(method: str, path: str, payload: dict | None = None):
 def push_full(head, remote_sha, tree_local, msg, meta):
     """全量重建：把本地所有文件上传为 blob，用完整 tree 创建提交，
     保证远程 tree 与本地完全一致（用于两边内容已经不一致时的对齐）。"""
-    ls = git("ls-files", "-s").splitlines()
     entries = []
-    for line in ls:
-        mode, sha, _stage, path = line.split("\t")[0].split(" ")[0], line.split(" ")[1], None, line.split("\t")[1]
+    for line in git("ls-files", "-s").splitlines():
+        meta_part, path = line.split("\t")
+        mode = meta_part.split()[0]          # 100644 / 100755 / 120000 —— 必须照抄，否则 tree 不一致
         content = base64.b64encode(open(path, "rb").read()).decode()
         blob = api("POST", f"repos/{REPO}/git/blobs", {"content": content, "encoding": "base64"})
-        entries.append({"path": path, "mode": "100644", "type": "blob", "sha": blob["sha"]})
+        entries.append({"path": path, "mode": mode, "type": "blob", "sha": blob["sha"]})
     print(f"  已上传 {len(entries)} 个文件")
     tree = api("POST", f"repos/{REPO}/git/trees", {"tree": entries})
     print(f"  新 tree {tree['sha'][:10]} / 本地 {tree_local[:10]} "

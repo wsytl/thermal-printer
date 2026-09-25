@@ -187,18 +187,24 @@ final class PrinterController: NSObject, ObservableObject {
         return gotDone
     }
 
-    /// 带响应写入单片，等 didWriteValueFor 回调（回调在代理扩展里调用 finishWrite）
+    /// 带响应写入单片，等 didWriteValueFor 回调（代理扩展调用 finishWrite）。
+    /// 带 2 秒兜底：打印机若长时间不回应答，放行下一片，避免整条打印永久卡死。
     private func writeChunk(_ data: Data, to char: CBCharacteristic, on peripheral: CBPeripheral) async {
         await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
             writeContinuation = cont
             peripheral.writeValue(data, for: char, type: .withResponse)
+            Task { [weak self] in
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                await MainActor.run { self?.finishWrite() }
+            }
         }
     }
 
-    /// 由代理扩展在 didWriteValueFor 时调用
+    /// 由代理扩展在 didWriteValueFor 时调用（重复调用安全）
     func finishWrite() {
-        writeContinuation?.resume()
+        guard let c = writeContinuation else { return }
         writeContinuation = nil
+        c.resume()
     }
 
     /// 等待打印机发来 0xAA（打印完成）

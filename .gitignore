@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 
 # ---- Xcode / 构建产物 ----
+dist/            # 打包产物（dmg/zip，用 package_mac.sh 生成）
 build_mac/
 build/
 DerivedData/

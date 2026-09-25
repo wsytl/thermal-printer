@@ -1,0 +1,2 @@
+b9eed0f6edc778910d87f0fcdd7c4309a22275e3cbc1670f7df095634d1e8e45  ThermalPrinter-1.0.dmg
+5355b2c0970f64a590a116657892f5aca9e5ebb96a8cc168acc449f982dcbab0  ThermalPrinter-1.0.zip

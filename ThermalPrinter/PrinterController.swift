@@ -42,6 +42,8 @@ final class PrinterController: NSObject, ObservableObject {
     private(set) var peripheral: CBPeripheral?
     var writeChar: CBCharacteristic?      // 代理扩展里订阅成功后写入
     private var doneContinuation: CheckedContinuation<Bool, Never>?
+    private var doneTimeoutTask: Task<Void, Never>?     // 本次等待的超时任务（完成时须取消）
+    private var earlyDone = false                       // 0xAA 早于等待到达时先缓存
     private var writeContinuation: CheckedContinuation<Void, Never>?   // 带响应写入的等待
     private var jobStart = Date()                                      // 统计发送耗时
     private var printQueue: [(data: Data, label: String, onDone: ((Bool) -> Void)?)] = []
@@ -199,15 +201,28 @@ final class PrinterController: NSObject, ObservableObject {
         writeContinuation = nil
     }
 
-    /// 等待打印机发来 0xAA
+    /// 等待打印机发来 0xAA（打印完成）
+    ///
+    /// 两个坑（都已处理）：
+    ///  1. 超时任务必须**取消**：否则上一次打印遗留的超时任务会在下一次打印期间触发，
+    ///     把下一次的等待以 false 结束（真实 0xAA 到了却没人接）——表现为"只有第一次能收到"。
+    ///  2. 0xAA 可能**早于**开始等待到达（短任务/发送慢），先缓存起来下次直接命中。
     private func waitForDone(timeout: TimeInterval) async -> Bool {
-        if doneContinuation != nil { return false }
-        return await withCheckedContinuation { cont in
+        if earlyDone {
+            earlyDone = false
+            log("（0xAA 已在等待前到达）")
+            return true
+        }
+        return await withCheckedContinuation { (cont: CheckedContinuation<Bool, Never>) in
             doneContinuation = cont
-            Task {
+            doneTimeoutTask?.cancel()
+            doneTimeoutTask = Task { [weak self] in
                 try? await Task.sleep(nanoseconds: UInt64(timeout * 1e9))
-                if let c = doneContinuation {
-                    doneContinuation = nil
+                guard !Task.isCancelled else { return }
+                await MainActor.run {
+                    guard let self, let c = self.doneContinuation else { return }
+                    self.doneContinuation = nil
+                    self.doneTimeoutTask = nil
                     c.resume(returning: false)
                 }
             }
@@ -220,9 +235,13 @@ final class PrinterController: NSObject, ObservableObject {
     func handleReceived(_ bytes: [UInt8]) {
         if bytes.count == 1 && bytes[0] == PrinterController.doneByte {
             log("收到 0xAA（打印完成）")
+            doneTimeoutTask?.cancel()          // 关键：本次等待已完成，取消超时任务
+            doneTimeoutTask = nil
             if let c = doneContinuation {
                 doneContinuation = nil
                 c.resume(returning: true)
+            } else {
+                earlyDone = true               // 还没开始等，先记下来
             }
         } else if bytes == PrinterController.okBytes {
             log("收到 OK（打印开始）")

@@ -1,0 +1,28 @@
+# ---- Python 虚拟环境与缓存 ----
+.venv/
+__pycache__/
+*.pyc
+
+# ---- Xcode / 构建产物 ----
+build_mac/
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# ---- macOS ----
+.DS_Store
+
+# ---- 敏感文件（证书 / 私钥）----
+*.p12
+*.pem
+*.key
+*.mobileprovision
+
+# ---- 厂商参考资料（反编译源码 / 官方固件）：另存于私有仓库 thermal-printer-vendor-ref ----
+ref/
+assets_x/
+
+# ---- 大体积个人素材（测试照片）----
+test1.jpg
+test2.HEIC

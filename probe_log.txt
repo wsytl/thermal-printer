@@ -1,0 +1,73 @@
+已连接 E0FDE891-08CD-4A23-0D1E-46FAA9E38D36, MTU=240
+使用写特征: 0000ff02-0000-1000-8000-00805f9b34fb  属性: ['write', 'write-without-response']
+已订阅通知 00002af0-0000-1000-8000-00805f9b34fb
+已订阅通知 0000ff01-0000-1000-8000-00805f9b34fb
+已订阅通知 0000ff03-0000-1000-8000-00805f9b34fb
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 04
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 02 64 00
+已订阅通知 bef8d6c9-9c21-4c9e-b632-bd58c1009f9f
+已订阅通知 49535343-1e4d-4bd9-ba61-23c647249616
+已订阅通知 49535343-aca3-481c-91ec-d85e28a60318
+
+开始探测。每发一条，盯紧打印机：电机转？出纸？指示灯变化？
+
+[01] 纯文本 Hello
+    发送(5B): 48 65 6c 6c 6f
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[02] 纯文本+换行
+    发送(6B): 48 65 6c 6c 6f 0a
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[03] ESC/POS 初始化 ESC @
+    发送(2B): 1b 40
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[04] ESC/POS 初始化+文本
+    发送(15B): 1b 40 45 53 43 2f 50 4f 53 20 74 65 73 74 0a
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[05] ESC/POS 位图黑条 GS v 0
+    发送(1163B): 1b 33 18 1d 76 30 00 30 00 18 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[06] ESC/POS 走纸 ESC d 5
+    发送(3B): 1b 64 05
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[07] 使能试探 AA 55 01 00
+    发送(4B): aa 55 01 00
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[08] 使能试探 01
+    发送(1B): 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[09] 使能试探 00
+    发送(1B): 00
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[10] 使能试探 1B 1D 66 6D 74
+    发送(5B): 1b 1d 66 6d 74
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[11] 喵喵机帧 cmd=0x01 小图(小端+校验)
+    发送(104B): 55 aa 55 aa 62 00 01 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[12] 喵喵机帧 cmd=0x01 小图(小端无校验)
+    发送(103B): 55 aa 55 aa 61 00 01 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[13] 喵喵机帧 cmd=0x02 小图(小端+校验)
+    发送(104B): 55 aa 55 aa 62 00 02 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 02
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[14] 喵喵机帧 cmd=0x01 大端+校验
+    发送(104B): 55 aa 55 aa 00 62 01 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[15] 帧头 5A A5 版 cmd=0x01
+    发送(104B): 5a a5 5a a5 62 00 01 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[16] 帧头 AA 55 AA 55 版 cmd=0x01
+    发送(104B): aa 55 aa 55 62 00 01 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 01
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[17] 状态查询帧 cmd=0xF0 空负载
+    发送(8B): 55 aa 55 aa 02 00 f0 f0
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+[18] 状态查询帧 cmd=0x03 空负载
+    发送(8B): 55 aa 55 aa 02 00 03 03
+  [收到通知 0000ff03-0000-1000-8000-00805f9b34fb (Handle: 24): Vendor specific] 01 01
+
+探测完成，日志已存 probe_log.txt。把该文件发回来。

@@ -17,9 +17,11 @@ final class PrintSettings: ObservableObject {
     @Published var brightness = 0.0          // -0.6...0.6
     @Published var contrast = 0.0            // -0.6...0.6
     @Published var dithering = true          // Floyd–Steinberg 抖动
-    /// 打印浓度固定值（1...5，越大越深）。实测官方默认 1 偏淡，中等 3 效果最好；
-    /// 如需可调，改这里并恢复界面上的选择器。
-    static let fixedDensity = 3
+    /// 打印浓度固定值（1...5，越大越深）。
+    /// ⚠️ 浓度会**改变走纸速度**：浓度越高、每行加热越久、走纸越慢，
+    ///    图案被纵向压扁（实测浓度 3 时文字明显压扁，浓度 1 时比例正常）。
+    ///    所以固定用 1；若将来要更深的墨色，必须同时按该浓度标定纵向预拉伸。
+    static let fixedDensity = 1
 
     // MARK: - 文本排版
 

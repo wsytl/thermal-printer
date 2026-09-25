@@ -17,7 +17,9 @@ final class PrintSettings: ObservableObject {
     @Published var brightness = 0.0          // -0.6...0.6
     @Published var contrast = 0.0            // -0.6...0.6
     @Published var dithering = true          // Floyd–Steinberg 抖动
-    @Published var density = 3               // 打印浓度 1...5（越大越深）
+    /// 打印浓度固定值（1...5，越大越深）。实测官方默认 1 偏淡，中等 3 效果最好；
+    /// 如需可调，改这里并恢复界面上的选择器。
+    static let fixedDensity = 3
 
     // MARK: - 文本排版
 
@@ -38,7 +40,7 @@ final class PrintSettings: ObservableObject {
         PrintEngine.RasterOptions(dithering: dithering,
                                   brightness: CGFloat(brightness),
                                   contrast: CGFloat(contrast),
-                                  density: UInt8(max(1, min(5, density))))
+                                  density: UInt8(max(1, min(5, Self.fixedDensity))))
     }
 
     var alignment: NSTextAlignment {
@@ -60,11 +62,10 @@ final class PrintSettings: ObservableObject {
         return s
     }
 
-    /// 恢复打印效果默认值
+    /// 恢复打印效果默认值（浓度固定为中等，不在此处）
     func resetEffects() {
         brightness = 0
         contrast = 0
         dithering = true
-        density = 3
     }
 }

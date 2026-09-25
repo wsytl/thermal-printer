@@ -42,6 +42,8 @@ final class PrinterController: NSObject, ObservableObject {
     private(set) var peripheral: CBPeripheral?
     var writeChar: CBCharacteristic?      // 代理扩展里订阅成功后写入
     private var doneContinuation: CheckedContinuation<Bool, Never>?
+    private var writeContinuation: CheckedContinuation<Void, Never>?   // 带响应写入的等待
+    private var jobStart = Date()                                      // 统计发送耗时
     private var printQueue: [(data: Data, label: String, onDone: ((Bool) -> Void)?)] = []
     private var isFlushing = false
 
@@ -143,7 +145,7 @@ final class PrinterController: NSObject, ObservableObject {
         }
     }
 
-    /// 执行单个打印任务：分片发送 → 等待 0xAA 完成
+    /// 执行单个打印任务：分片发送（等应答）→ 等待 0xAA 完成信号
     private func executePrint(data: Data, label: String) async -> Bool {
         guard let peripheral, let writeChar else {
             log("打印中断：连接丢失")
@@ -152,28 +154,27 @@ final class PrinterController: NSObject, ObservableObject {
         isPrinting = true
         currentJobLabel = label
         sendingProgress = 0
+        jobStart = Date()
         log("开始打印：\(label)…")
 
-        // 分片发送（withoutResponse；长图自动降速防溢出）
-        let chunk = PrintEngine.chunkSize
-        let delay = PrintEngine.interChunkDelay(for: data.count)
-        if delay > 0.015 {
-            log("长图模式：已降速发送（防打印机缓冲溢出）")
-        }
+        // 用「带响应写入」：每片等打印机 ATT 应答再发下一片，由打印机自己节流。
+        // 官方 App 亦为此方式（Android 默认 WRITE_TYPE_DEFAULT）——withoutResponse
+        // 在长任务/密内容时会静默丢包，表现为图案变短、缺底部边距。
+        let maxLen = peripheral.maximumWriteValueLength(for: .withResponse)
+        let chunk = max(20, min(PrintEngine.chunkSize, maxLen))
         var idx = 0
         while idx < data.count {
             let end = min(idx + chunk, data.count)
-            let slice = data.subdata(in: idx..<end)
-            peripheral.writeValue(slice, for: writeChar, type: .withoutResponse)
+            await writeChunk(data.subdata(in: idx..<end), to: writeChar, on: peripheral)
             idx = end
             sendingProgress = Double(idx) / Double(data.count)
-            try? await Task.sleep(nanoseconds: UInt64(delay * 1e9))
         }
         sendingProgress = nil
-        log("数据发送完毕（\(data.count) 字节），等待打印机完成信号…")
+        log(String(format: "数据发送完毕（%d 字节，用时 %.1fs），等待打印机完成信号…",
+                   data.count, Date().timeIntervalSince(jobStart)))
 
-        // 等待 0xAA（最长 15 秒）
-        let gotDone = await waitForDone(timeout: 15)
+        // 等待 0xAA（长任务打印慢，给足 60 秒）
+        let gotDone = await waitForDone(timeout: 60)
         isPrinting = false
         currentJobLabel = nil
         if gotDone {
@@ -182,6 +183,20 @@ final class PrinterController: NSObject, ObservableObject {
             log("⚠️ 未收到完成信号（可能仍在打印或连接异常）：\(label)")
         }
         return gotDone
+    }
+
+    /// 带响应写入单片，等 didWriteValueFor 回调（回调在代理扩展里调用 finishWrite）
+    private func writeChunk(_ data: Data, to char: CBCharacteristic, on peripheral: CBPeripheral) async {
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            writeContinuation = cont
+            peripheral.writeValue(data, for: char, type: .withResponse)
+        }
+    }
+
+    /// 由代理扩展在 didWriteValueFor 时调用
+    func finishWrite() {
+        writeContinuation?.resume()
+        writeContinuation = nil
     }
 
     /// 等待打印机发来 0xAA

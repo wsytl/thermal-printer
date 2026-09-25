@@ -27,14 +27,17 @@ enum PrintEngine {
     // MARK: - 打印机参数（B3）
 
     static let paperDots = 576          // 打印头宽度（点）
-    // 纵向行距修正（2026-09-25 照片+尺子交叉实测）：
-    // 打印机横向 11.9 点/mm（300dpi），但纵向行距约 21 行/mm（0.047mm/行）——
-    // 即每行位图只走纸约 0.047mm，所有图案会被打矮 1.75 倍。
-    // 修复：生成点阵前把图像高度预拉伸 1.75 倍，打印出来比例即正确。
-    static let verticalCorrection: CGFloat = 1.75
-    // 物理尺寸换算（实测：横向 500 点 = 42mm → 0.084mm/点；纵向 = 横向/1.75）
+    // 纵向行距修正（2026-09-25 重新标定，多浓度重复测量）：
+    // 实测 500 行竖条 = 43mm（默认浓度与浓度 1–5 **六张完全一致**）
+    //   → 纵向行距 ≈ 0.086mm/行 ≈ 300dpi，与横向 11.9 点/mm 一致
+    //   → **纵向不需要任何补偿，系数 = 1.0**
+    // ⚠️ 早期曾用 1.75（基于被截断/误测的样张得出的错误结论），
+    //    后果是文字与图片被纵向拉长 1.75 倍。
+    //    另经实测确认：打印浓度**不影响**行距。
+    static let verticalCorrection: CGFloat = 1.0
+    // 物理尺寸换算（实测：横向 500 点 = 42mm → 0.084mm/点；纵向 500 行 = 43mm → 0.086mm/行）
     static let dotPitchMM: CGFloat = 0.084
-    static var rowPitchMM: CGFloat { dotPitchMM / verticalCorrection }   // ≈0.048mm/行
+    static var rowPitchMM: CGFloat { dotPitchMM / verticalCorrection }   // ≈0.084mm/行
     static var printWidthMM: CGFloat { CGFloat(paperDots) * dotPitchMM } // ≈48.4mm
     static let topBlankRows = 60        // 顶部空白行
     // 底部空白行：打印头到出纸口约有 2cm+ 的距离，任务结束后的留白若不够长

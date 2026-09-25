@@ -134,6 +134,18 @@ extension PrinterController: CBPeripheralDelegate {
         }
     }
 
+    /// 带响应写入完成（每片一次）→ 放行下一片
+    nonisolated func peripheral(_ peripheral: CBPeripheral,
+                                didWriteValueFor characteristic: CBCharacteristic,
+                                error: Error?) {
+        Task { @MainActor in
+            if let error {
+                log("写入失败：\(error.localizedDescription)")
+            }
+            finishWrite()
+        }
+    }
+
     nonisolated func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
         // CoreBluetooth 缓冲满时会回调此方法；当前靠 12ms 间隔限速，预留扩展
     }

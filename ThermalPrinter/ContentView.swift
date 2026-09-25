@@ -179,11 +179,10 @@ struct ContentView: View {
 
             Divider().frame(height: 16)
 
-            Picker("浓度", selection: $settings.density) {
-                ForEach(1...5, id: \.self) { Text("浓度 \($0)").tag($0) }
-            }
-            .frame(width: 110)
-            .help("打印深浅：1 最淡、5 最深（官方默认 1，实测偏淡）")
+            Text("浓度 中（\(PrintSettings.fixedDensity)）")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .help("打印深浅固定为中等（3/5）。如需调节改 PrintSettings.fixedDensity")
 
             Spacer()
 
